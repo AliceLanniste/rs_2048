@@ -7,6 +7,15 @@ pub struct GameBoard {
    board: [[Option<i32>;4];4],
 }
 
+
+#[derive(Debug)]
+enum Directions {
+    UP,
+    DOWN,
+    LEFT,
+    RIGHT,
+}
+
 impl  GameBoard {
     fn new() -> Self {
        
@@ -91,11 +100,62 @@ impl  GameBoard {
        
     }
 
+    pub fn Direction_move(&mut self,dierct:Directions)  {
+        match direct {
+            UP => {for x in 0..=3 {
+                let y = 1;
+                while y < 4 {
+                        self.move(x, y, 0, -1);
+                    y++;
+                }
+            }},
+            DOWN=> {for x in 0..=3 {
+                let y = 2;
+                while y >=0 {
+                        self.move(x, y, 0, 1);
+                    y--;
+                }
+            }},
+            LEFT=> {for y in 0..=3 {
+                let x = 1;
+                while x < 4 {
+                    self.move(x,y,-1,0);
+                    x++;
+                }
+            }},
+            RIGHT=>{ for y in 0..=3 {
+                let x = 2;
+                while x >= 0 {
+                    self.move(x,y,1,0);
+                    x--;
+                }
+            }},
+        }
 
-    pub fn mvoe_down(&self)  {
+       
+    }
+
+
+    fn move(&mut self ,x:i8,y:i8,c:i8,r:i8)  {
+        let (x1,y1 ,tx, ty) = (x as usize, y as usize, (x+c) as usize, (y+r) as usize);
+        let current = self.board[y1][x1];
+        let target = self.board[ty][tx];
+        match (current, target) {
+            (None, _)  => {},
+            (Some(v1),Some(v2)) if v1 == v2 => {
+                    self.board[ty][tx] = self.board[ty][tx].map(|v| v*2);
+                    self.board[y1][x1]= None;},
+            (Some(v1),None) => {
+                if (r+c ==1 && if r==1 {y} else {x} <2 ){
+                    move_down(x+c,y+r,c,r);}
+                else if( r+c == -1 && if r == -1 {y} else {x} > 1){
+                    move_down(x+c,y+r,c,r);
+                }    
+                }},
+            (Some(_),Some(_))  => {},
+        }
+
         
-        let x = 0;
-        let col = [];
         unimplemented!();
     }
     
