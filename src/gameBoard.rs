@@ -9,7 +9,7 @@ pub struct GameBoard {
 
 
 #[derive(Debug)]
-enum Directions {
+pub enum Directions {
     UP,
     DOWN,
     LEFT,
@@ -100,34 +100,34 @@ impl  GameBoard {
        
     }
 
-    pub fn Direction_move(&mut self,dierct:Directions)  {
+    pub fn Direction_move(&mut self,direct:Directions)  {
         match direct {
-            UP => {for x in 0..=3 {
-                let y = 1;
+            Directions::UP => {for x in 0..=3 {
+                let mut y = 1;
                 while y < 4 {
-                        self.move(x, y, 0, -1);
-                    y++;
+                        self.Rmove(x, y, 0, -1);
+                    y=y+1;
                 }
             }},
-            DOWN=> {for x in 0..=3 {
-                let y = 2;
+            Directions::DOWN=> {for x in 0..=3 {
+                let mut y = 2;
                 while y >=0 {
-                        self.move(x, y, 0, 1);
-                    y--;
+                        self.Rmove(x, y, 0, 1);
+                    y=y-1;
                 }
             }},
-            LEFT=> {for y in 0..=3 {
-                let x = 1;
+            Directions::LEFT=> {for y in 0..=3 {
+                let mut x = 1;
                 while x < 4 {
-                    self.move(x,y,-1,0);
-                    x++;
+                    self.Rmove(x,y,-1,0);
+                    x=x+1;
                 }
             }},
-            RIGHT=>{ for y in 0..=3 {
-                let x = 2;
+            Directions::RIGHT=>{ for y in 0..=3 {
+                let mut x = 2;
                 while x >= 0 {
-                    self.move(x,y,1,0);
-                    x--;
+                    self.Rmove(x,y,1,0);
+                    x= x-1;
                 }
             }},
         }
@@ -136,7 +136,7 @@ impl  GameBoard {
     }
 
 
-    fn move(&mut self ,x:i8,y:i8,c:i8,r:i8)  {
+    fn Rmove(&mut self ,x:i8,y:i8,c:i8,r:i8)  {
         let (x1,y1 ,tx, ty) = (x as usize, y as usize, (x+c) as usize, (y+r) as usize);
         let current = self.board[y1][x1];
         let target = self.board[ty][tx];
@@ -145,20 +145,18 @@ impl  GameBoard {
             (Some(v1),Some(v2)) if v1 == v2 => {
                     self.board[ty][tx] = self.board[ty][tx].map(|v| v*2);
                     self.board[y1][x1]= None;},
-            (Some(v1),None) => {
-                if (r+c ==1 && if r==1 {y} else {x} <2 ){
-                    move_down(x+c,y+r,c,r);}
-                else if( r+c == -1 && if r == -1 {y} else {x} > 1){
-                    move_down(x+c,y+r,c,r);
+            (Some(_v1),None) => {
+                   
+                if r+c ==1 && if r==1 {y} else {x} <2 {
+                    self.Rmove(x+c,y+r,c,r);}
+                else if r+c == -1 && if r == -1 {y} else {x} > 1{
+                    self.Rmove(x+c,y+r,c,r);
                 }    
-                }},
+                },
             (Some(_),Some(_))  => {},
         }
 
-        
-        unimplemented!();
     }
-    
 
     pub  fn move_right(&self)  {
         unimplemented!();
@@ -240,8 +238,124 @@ impl  GameBoard {
     }
 }
 
+#[cfg(test)]
+mod tests {
+    use super::*;
 
-//1.改变初始棋盘 
-//2.可以左右移动以及如何判断左右移动
-//3.游戏无法继续下去
+#[test]
+    fn test_move_up()  {
+        let mut test_board = GameBoard::new();
+        test_board.board = [
+            [Some(2), Some(8), Some(16), Some(4)],
+            [None, Some(4),    Some(8),    Some(2)],
+            [None, None,      Some(2),     Some(8)],
+            [None, None, None,          Some(2)]
+        ];
+        assert_eq!(test_board.is_up_movable(), false);
 
+        test_board.board = [
+            [Some(2), Some(8), Some(16), Some(2)],
+            [None,   Some(4),  Some(8), Some(2)],
+            [None,   None,    Some(2),  Some(8)],
+            [None,   None,    None,     Some(2)]
+        ];
+        assert_eq!(test_board.is_up_movable(), true);
+        test_board.board = [
+            [Some(2), Some(8), Some(16), Some(4)],
+            [None,   Some(4),  Some(8), Some(2)],
+            [None,   Some(4),  Some(8),  Some(8)],
+            [None,   None,    None,     Some(2)]
+        ];
+        assert_eq!(test_board.is_up_movable(), true);
+    }
+
+    #[test]
+    fn test_move_down()  {
+        let mut test_board = GameBoard::new();
+        test_board.board = [
+            [None, Some(8), Some(16),  Some(4)],
+            [None, Some(4),    Some(8),    Some(2)],
+            [None, None,      Some(2),     Some(8)],
+            [None, None, None,             Some(2)]
+        ];
+        assert_eq!(test_board.is_up_movable(), false);
+
+        test_board.board = [
+            [Some(2), Some(8), Some(16), Some(2)],
+            [None,   Some(4),  Some(8), Some(2)],
+            [None,   None,    Some(2),  Some(8)],
+            [None,   None,    None,     Some(2)]
+        ];
+        assert_eq!(test_board.is_up_movable(), true);
+        test_board.board = [
+            [Some(2), Some(8), Some(16), Some(4)],
+            [None,   Some(4),  Some(8),  Some(2)],
+            [None,   Some(4),  Some(8),  Some(8)],
+            [None,   None,    None,      Some(2)]
+        ];
+        assert_eq!(test_board.is_up_movable(), true);
+    }
+
+    #[test]
+    fn test_move_left()  {
+        let mut test_board = GameBoard::new();
+        test_board.board = [
+            [Some(2), Some(8), Some(16), Some(4)],
+            [Some(2), Some(4),    Some(32),    Some(8)],
+            [Some(2), Some(4),      Some(2),     Some(8)],
+            [None, None, None,          None]
+        ];
+        assert_eq!(test_board.is_up_movable(), false);
+
+        test_board.board = [
+            [Some(8), Some(8), Some(16), Some(2)],
+            [None,   Some(4),  Some(8), Some(2)],
+            [None,   None,    Some(2),  Some(8)],
+            [None,   None,    None,     Some(2)]
+        ];
+        assert_eq!(test_board.is_up_movable(), true);
+        test_board.board = [
+            [Some(2), Some(8), Some(16), Some(4)],
+            [None,   Some(4),  Some(8), Some(2)],
+            [None,   Some(4),  Some(8),  Some(8)],
+            [None,   None,    None,     Some(2)]
+        ];
+        assert_eq!(test_board.is_up_movable(), true);
+    }
+
+     fn test_move_right()  {
+        let mut test_board = GameBoard::new();
+        test_board.board = [
+            [Some(2), Some(8), Some(16), Some(4)],
+            [None, Some(4),    Some(8),    Some(2)],
+            [None, None,      Some(2),     Some(8)],
+            [None, None, None,          Some(2)]
+        ];
+        assert_eq!(test_board.is_up_movable(), false);
+
+        test_board.board = [
+            [Some(2), Some(8), Some(16), Some(2)],
+            [None,   Some(4),  Some(8), Some(2)],
+            [None,   None,    Some(2),  Some(2)],
+            [None,   None,    None,     Some(2)]
+        ];
+        assert_eq!(test_board.is_up_movable(), true);
+        test_board.board = [
+            [Some(2), Some(2), Some(16), Some(4)],
+            [None,   Some(4),  Some(2), Some(2)],
+            [None,   Some(4),  Some(8),  Some(8)],
+            [None,   None,    None,     Some(2)]
+        ];
+        assert_eq!(test_board.is_up_movable(), true);
+    }
+}
+
+
+
+
+//1.改变初始棋盘 完成
+//2.可以左右移动以及如何判断左右移动 完成
+//2.1. 添加测试测试移动和方向
+//3.如何判定胜负
+//记录分数 （简单）
+//保存当前数据并可以重启或者重置
