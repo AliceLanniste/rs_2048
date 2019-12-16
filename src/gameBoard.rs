@@ -123,10 +123,12 @@ impl GameBoard {
             Directions::RIGHT => {
                 for y in 0..=3 {
                     let mut x = 2;
-                    while x >= 0 {
-                        self.Rmove(x, y, 1, 0);
-                        x -= 1;
-                    }
+                       while x >= 0 {
+                          self.Rmove(x, y, 1, 0);
+                          x -= 1;
+                       }
+                           
+                      
                 }
             }
         }
@@ -134,8 +136,13 @@ impl GameBoard {
 
     fn Rmove(&mut self, x: i8, y: i8, c: i8, r: i8) {
         let (x1, y1, tx, ty) = (x as usize, y as usize, (x + c) as usize, (y + r) as usize);
-        let current = self.board[y1][x1];
-        let target = self.board[ty][tx];
+
+        
+         let current = self.board[y1][x1];
+         let target = self.board[ty][tx];
+    
+        
+        
         match (current, target) {
             (None, _) => {}
             (Some(v1), Some(v2)) if v1 == v2 => {
@@ -143,8 +150,9 @@ impl GameBoard {
                 self.board[y1][x1] = None;
             }
             (Some(_v1), None) => {
-                if r + c == 1 && if r == 1 { y } else { x } < 2 {
-                    self.Rmove(x + c, y + r, c, r);
+                   
+                 if r + c == 1 {
+                      self.Rmove(x + c, y + r, c, r) 
                 } else if r + c == -1 && if r == -1 { y } else { x } > 1 {
                     self.Rmove(x + c, y + r, c, r);
                 }
@@ -153,9 +161,9 @@ impl GameBoard {
         }
     }
 
-    pub fn move_right(&self) {
-        unimplemented!();
-    }
+    // pub fn move_right(&self) {
+    //     unimplemented!();
+    // }
 
     pub fn is_up_movable(&self) -> bool {
         let mut movable = false;
@@ -278,6 +286,14 @@ mod tests {
             [None, None, Some(2), Some(8)],
             [None, None, None, Some(2)],
         ];
+        assert_eq!(test_board.is_down_movable(), true);
+
+        test_board.board = [
+            [None, None, Some(16), Some(4)],
+            [None, None, Some(8), Some(2)],
+            [None,  Some(8), Some(2), Some(8)],
+            [None, Some(4), Some(32), Some(2)],
+        ];
         assert_eq!(test_board.is_down_movable(), false);
 
         test_board.board = [
@@ -323,6 +339,7 @@ mod tests {
         assert_eq!(test_board.is_left_movable(), true);
     }
 
+    #[test]
     fn test_movable_right() {
         let mut test_board = GameBoard::new();
         test_board.board = [
@@ -349,7 +366,7 @@ mod tests {
         assert_eq!(test_board.is_right_movable(), true);
     }
 
-    //test up,down,left,right move
+    // //test up,down,left,right move
     #[test]
     fn test_move_up() {
         let mut test_board = GameBoard::new();
@@ -368,6 +385,8 @@ mod tests {
         test_board.Direction_move(Directions::UP);
         assert_eq!(test_board.board, test_data);
     }
+
+
 
     #[test]
     fn test_move_down() {
@@ -392,20 +411,22 @@ mod tests {
     fn test_move_right() {
         let mut test_board = GameBoard::new();
         let test_data = [
-            [Some(2), Some(8), Some(16), Some(4)],
-            [Some(2), Some(4), Some(8), Some(2)],
-            [None, None, Some(2), Some(4)],
-            [None, None, None, Some(4)],
+            [None, None, None, Some(2)],
+            [None, None, None, None],
+            [None, None, None, None],
+            [None, None, None, None],
         ];
         test_board.board = [
-            [Some(2), Some(8), Some(16), Some(4)],
-            [Some(2), Some(4), Some(8), Some(2)],
-            [Some(2), None, Some(2), Some(2)],
-            [Some(2), None, None, Some(2)],
+            [Some(2), None,None,None],
+            [None, None,None,None],
+            [None, None,None,None],
+           [None, None,None,None]
         ];
         test_board.Direction_move(Directions::RIGHT);
         assert_eq!(test_board.board, test_data);
     }
+
+
 
     #[test]
     fn test_move_left() {
