@@ -149,9 +149,10 @@ impl GameBoard {
                 self.board[ty][tx] = self.board[ty][tx].map(|v| v * 2);
                 self.board[y1][x1] = None;
             }
-            (Some(_v1), None) => {
-                   
-                 if r + c == 1 {
+            (Some(v1), None) => {
+                  self.board[ty][tx] = Some(v1);
+                  self.board[y1][x1] = None;
+                 if r + c == 1 && if r == 1 { y } else { x } <2 {
                       self.Rmove(x + c, y + r, c, r) 
                 } else if r + c == -1 && if r == -1 { y } else { x } > 1 {
                     self.Rmove(x + c, y + r, c, r);
