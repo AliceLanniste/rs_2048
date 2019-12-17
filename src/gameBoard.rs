@@ -372,16 +372,16 @@ mod tests {
     fn test_move_up() {
         let mut test_board = GameBoard::new();
         let test_data = [
-            [Some(4), Some(8), Some(16), Some(4)],
-            [Some(4), Some(4), Some(8), Some(2)],
-            [None, None, Some(2), Some(4)],
+            [Some(2), None, None,None],
             [None, None, None, None],
+            [None, None, None, None],
+            [None, None, None,    None],
         ];
         test_board.board = [
-            [Some(2), Some(8), Some(16), Some(4)],
-            [Some(2), Some(4), Some(8), Some(2)],
-            [Some(2), None, Some(2), Some(2)],
-            [Some(2), None, None, Some(2)],
+            [None, None, None, None],
+            [None, None, None, None],
+            [None, None, None, None],
+            [Some(2), None, None,    None],
         ];
         test_board.Direction_move(Directions::UP);
         assert_eq!(test_board.board, test_data);
@@ -393,16 +393,16 @@ mod tests {
     fn test_move_down() {
         let mut test_board = GameBoard::new();
         let test_data = [
-            [None, Some(8), Some(16), Some(4)],
-            [None, Some(4), Some(8), Some(2)],
-            [Some(4), None, Some(2), None],
-            [Some(4), None, None, Some(4)],
+            [None, None, None, None],
+            [None, None, None, None],
+            [None, None, None, None],
+            [Some(4), None, None,Some(2)],
         ];
         test_board.board = [
-            [Some(2), Some(8), Some(16), Some(4)],
-            [Some(2), Some(4), Some(8), Some(2)],
-            [Some(2), None, Some(2), Some(2)],
             [Some(2), None, None, Some(2)],
+            [None,    None, None, None],
+            [None,    None, None, None],
+            [Some(2), None, None,    None],
         ];
         test_board.Direction_move(Directions::DOWN);
         assert_eq!(test_board.board, test_data);
@@ -433,16 +433,16 @@ mod tests {
     fn test_move_left() {
         let mut test_board = GameBoard::new();
         let test_data = [
-            [Some(2), Some(8), Some(16), Some(4)],
-            [Some(2), Some(4), Some(8), Some(2)],
-            [Some(2), Some(4), None, None],
             [Some(4), None, None, None],
+            [None,    None, None, None],
+            [None,    None, None, None],
+            [Some(2), None, None,  None ],
         ];
         test_board.board = [
-            [Some(2), Some(8), Some(16), Some(4)],
-            [Some(2), Some(4), Some(8), Some(2)],
-            [Some(2), None, Some(2), Some(2)],
             [Some(2), None, None, Some(2)],
+            [None,    None, None, None],
+            [None,    None, None, None],
+            [Some(2), None, None,    None],
         ];
         test_board.Direction_move(Directions::LEFT);
         assert_eq!(test_board.board, test_data);
