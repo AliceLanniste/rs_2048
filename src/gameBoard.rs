@@ -2,6 +2,8 @@ use rand::prelude::{thread_rng, SliceRandom};
 
 #[derive(Debug)]
 pub struct GameBoard {
+    score: u32,
+    largest:u32,
     board: [[Option<i32>; 4]; 4],
 }
 
@@ -16,6 +18,8 @@ pub enum Directions {
 impl GameBoard {
     fn new() -> Self {
         Self {
+            score: 0,
+            largest:0,
             board: [[None; 4]; 4],
         }
     }
@@ -83,13 +87,13 @@ impl GameBoard {
         *choices.choose(&mut rng).unwrap()
     }
 
-    fn test_add(&self, x: usize, y: usize, value: i32) -> bool {
-        if x > 3 || y > 3 {
-            return false;
-        }
+    // fn test_add(&self, x: usize, y: usize, value: i32) -> bool {
+    //     if x > 3 || y > 3 {
+    //         return false;
+    //     }
 
-        Some(value) == self.board[x][y]
-    }
+    //     Some(value) == self.board[x][y]
+    // }
 
     pub fn Direction_move(&mut self, direct: Directions) {
         match direct {
@@ -148,6 +152,19 @@ impl GameBoard {
             (Some(v1), Some(v2)) if v1 == v2 => {
                 self.board[ty][tx] = self.board[ty][tx].map(|v| v * 2);
                 self.board[y1][x1] = None;
+                let target = if let Some(number) = self.board[ty][tx] {
+                    number as u32
+                }else { unreachable!() };
+                
+                self.score += target;
+                self.largest = if self.largest < target  {target} else {self.largest}; 
+                if target == 2048 {
+                    println!("you Win! Press any key to continue or 'x' to exit:");
+                    //keyboard input
+                    //input:x exit
+                    //input:_  continue
+                }
+
             }
             (Some(v1), None) => {
                   self.board[ty][tx] = Some(v1);
