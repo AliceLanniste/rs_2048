@@ -1,7 +1,9 @@
 pub mod gameBoard;
 use gameBoard::GameBoard;
 
-fn main() {}
+fn main() {
+  draw_board()
+}
 
 //opening
 fn draw_ascii() {
@@ -18,3 +20,16 @@ fn draw_ascii() {
 
     println!("{}", s_2048);
 }
+
+
+fn draw_board()  {
+    let mut board = GameBoard::new();
+    board.fill_in();
+    board.display()
+}
+
+
+//键盘控制
+// 1.得读取键盘字母，wasd是上下左右，r是重启，c是保存
+
+

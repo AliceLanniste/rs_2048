@@ -16,7 +16,7 @@ pub enum Directions {
 }
 
 impl GameBoard {
-    fn new() -> Self {
+    pub fn new() -> Self {
         Self {
             score: 0,
             largest:0,
@@ -53,7 +53,7 @@ impl GameBoard {
     }
 
     //随机选位置[x][y],然后随机选2或4，2出现的概率要大于4
-    fn fill_in(&mut self) {
+    pub fn fill_in(&mut self) {
         let area = self.position();
         let mut rng = thread_rng();
 
@@ -262,6 +262,22 @@ impl GameBoard {
             _ => true,
         }
     }
+
+
+    pub fn control(&mut self, key: char)  {
+        match key {
+             'w'|'W'  => self.Direction_move(Directions::UP),
+             'a'| 'A' => self.Direction_move(Directions::DOWN),
+             's'|'S'  => self.Direction_move(Directions::LEFT),
+             'd'| 'D' =>self.Direction_move(Directions::RIGHT),
+             'r' |'R' => unimplemented!(),
+             'c'|'C'  => unimplemented!(),
+             _  => unimplemented!(),
+           
+        }
+      
+   }
+   
 }
 
 #[cfg(test)]
