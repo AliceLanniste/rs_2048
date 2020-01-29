@@ -1,12 +1,21 @@
-fn start_game(arg: Type) -> RetType {
-    unimplemented!();
-}
 
-fn continue_game(arg: Type) -> RetType {
-    unimplemented!();
-}
+use crate::gameBoard::GameBoard;
 
 
-fn exit_game(arg: Type) -> RetType {
-    unimplemented!();
+pub fn start_game(mut game:GameBoard,key:char)  {
+    game.fill_in();
+    game.display();
+    loop {
+       game.control(key)
+    }
 }
+
+// fn continue_game(arg: Type) -> RetType {
+//     unimplemented!();
+// }
+
+
+// fn exit_game(arg: Type) -> RetType {
+//     unimplemented!();
+// }
+

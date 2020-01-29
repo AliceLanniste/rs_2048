@@ -41,7 +41,7 @@ impl GameBoard {
 
             for j in 0..=3 {
                 match self.board[i][j] {
-                    Some(value) => print!("{:width$}", value, width = 7),
+                    Some(value) => print!("{d}{:width$}", value, d=delimiter,width = 4),
                     None => print!("{:width$}", delimiter, width = 7),
                 }
             }
@@ -87,15 +87,9 @@ impl GameBoard {
         *choices.choose(&mut rng).unwrap()
     }
 
-    // fn test_add(&self, x: usize, y: usize, value: i32) -> bool {
-    //     if x > 3 || y > 3 {
-    //         return false;
-    //     }
+    
 
-    //     Some(value) == self.board[x][y]
-    // }
-
-    pub fn Direction_move(&mut self, direct: Directions) {
+    fn Direction_move(&mut self, direct: Directions) {
         match direct {
             Directions::UP => {
                 for x in 0..=3 {
@@ -264,19 +258,20 @@ impl GameBoard {
     }
 
 
-    pub fn control(&mut self, key: char)  {
-        match key {
-             'w'|'W'  => self.Direction_move(Directions::UP),
-             'a'| 'A' => self.Direction_move(Directions::DOWN),
-             's'|'S'  => self.Direction_move(Directions::LEFT),
-             'd'| 'D' =>self.Direction_move(Directions::RIGHT),
-             'r' |'R' => unimplemented!(),
-             'c'|'C'  => unimplemented!(),
-             _  => unimplemented!(),
-           
-        }
-      
-   }
+    
+pub fn control(&mut self, key: char)  {
+    match key {
+         'w'|'W'  => self.Direction_move(Directions::UP),
+         'a'| 'A' => self.Direction_move(Directions::DOWN),
+         's'|'S'  => self.Direction_move(Directions::LEFT),
+         'd'| 'D' =>self.Direction_move(Directions::RIGHT),
+         'x' |'X' => panic!(" exit game"),
+         'c'|'C'  => unimplemented!(),
+          _  =>  unreachable!()
+       
+    }
+  
+}
    
 }
 

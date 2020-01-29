@@ -1,8 +1,19 @@
 pub mod gameBoard;
+pub mod menu;
+
 use gameBoard::GameBoard;
 
+use std::io::stdin;
+
 fn main() {
-  draw_board()
+  let mut game = GameBoard::new();
+  // draw_ascii();
+   game.fill_in();
+    game.display();
+  let mut input = String::new();
+  stdin().read_line(&mut input).expect("please input an valid key"); 
+    
+   menu::start_game(game, input.pop().unwrap())
 }
 
 //opening
