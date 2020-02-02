@@ -1,19 +1,15 @@
-pub mod gameBoard;
+
 pub mod menu;
+pub mod gameBoard;
 
-use gameBoard::GameBoard;
 
-use std::io::stdin;
 
 fn main() {
-  let mut game = GameBoard::new();
-  // draw_ascii();
-   game.fill_in();
-    game.display();
-  let mut input = String::new();
-  stdin().read_line(&mut input).expect("please input an valid key"); 
-    
-   menu::start_game(game, input.pop().unwrap())
+  
+  draw_ascii();
+  menu::start_game()
+  
+ 
 }
 
 //opening
@@ -32,12 +28,6 @@ fn draw_ascii() {
     println!("{}", s_2048);
 }
 
-
-fn draw_board()  {
-    let mut board = GameBoard::new();
-    board.fill_in();
-    board.display()
-}
 
 
 //键盘控制
