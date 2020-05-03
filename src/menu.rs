@@ -15,7 +15,7 @@ pub fn start_game()  {
               "a" |"A"=> game.direction_move(Directions::LEFT),
               "d" |"D"=> game.direction_move(Directions::RIGHT),
 
-              _ => break,
+              _ => {println!("score: {},largest:{}",&game.score,&game.largest); break},
           }
      
         game.fill_in();

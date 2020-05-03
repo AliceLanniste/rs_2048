@@ -2,8 +2,8 @@ use rand::prelude::{thread_rng, SliceRandom};
 
 #[derive(Debug)]
 pub struct GameBoard {
-    score: u32,
-    largest:u32,
+    pub score: u32,
+    pub largest:u32,
     board: [[Option<i32>; 4]; 4],
 }
 
